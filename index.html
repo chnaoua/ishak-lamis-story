@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حكاية حب | إسحاق ولميس</title>
+    <!-- استدعاء الخطوط -->
+    <link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Amiri:ital,wght@0,400;0,700;1,400&family=Cairo:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-dark: #070b19;
+            --gold: #dfb163;
+            --text-light: #e2e8f0;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body, html {
+            height: 100%;
+            font-family: 'Cairo', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            scroll-snap-type: y mandatory;
+            overflow-y: scroll;
+            scroll-behavior: smooth;
+        }
+
+        /* تنسيق اللغات */
+        .en, .en-text { display: none; }
+        body.english-mode .ar, body.english-mode .ar-text { display: none; }
+        body.english-mode .en, body.english-mode .en-text { display: inline; }
+        
+        body.english-mode .title-main, 
+        body.english-mode .name, 
+        body.english-mode .age-section h3, 
+        body.english-mode .quote-large { font-family: 'Playfair Display', serif; }
+
+        body.english-mode .title-sub,
+        body.english-mode .intro-quote,
+        body.english-mode .timeline-box h3,
+        body.english-mode .quote-small,
+        body.english-mode .quote-desc,
+        body.english-mode .time-box span.num { font-family: 'Playfair Display', serif; }
+
+        .lang-switch {
+            position: fixed; top: 20px; left: 20px; z-index: 1000;
+            background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(223, 177, 99, 0.4);
+            padding: 8px 16px; border-radius: 20px; color: var(--gold);
+            font-family: 'Cairo', sans-serif; font-weight: 600; cursor: pointer;
+            backdrop-filter: blur(10px); box-shadow: 0 4px 15px rgba(0,0,0,0.3); transition: all 0.3s ease;
+        }
+        .lang-switch:hover { background: rgba(223, 177, 99, 0.3); transform: scale(1.05); }
+
+        .screen {
+            min-height: 100vh; width: 100%; scroll-snap-align: start;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            position: relative; padding: 40px 20px; text-align: center;
+            background-size: cover; background-position: center;
+        }
+
+        #screen-intro { background-image: linear-gradient(rgba(7, 11, 25, 0.6), rgba(7, 11, 25, 0.9)), url('https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1080&auto=format&fit=crop'); }
+        #screen-names { background-image: linear-gradient(rgba(7, 11, 25, 0.7), rgba(7, 11, 25, 0.8)), url('https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=1080&auto=format&fit=crop'); }
+        #screen-timeline { background-image: linear-gradient(rgba(7, 11, 25, 0.8), rgba(7, 11, 25, 0.8)), url('https://images.unsplash.com/photo-1520854221256-17451cc331bf?q=80&w=1080&auto=format&fit=crop'); }
+        #screen-ages { background-image: linear-gradient(rgba(7, 11, 25, 0.7), rgba(7, 11, 25, 0.9)), url('https://images.unsplash.com/photo-1518133910546-b6c2fb7d79e3?q=80&w=1080&auto=format&fit=crop'); }
+        #screen-map-section { background-image: linear-gradient(rgba(7, 11, 25, 0.95), rgba(7, 11, 25, 0.98)), url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1080&auto=format&fit=crop'); }
+        #screen-counter { background-image: linear-gradient(rgba(7, 11, 25, 0.5), rgba(7, 11, 25, 0.9)), url('https://images.unsplash.com/photo-1532712938310-34cb3982ef74?q=80&w=1080&auto=format&fit=crop'); }
+
+        .ornament { font-size: 3em; color: var(--gold); margin-bottom: 20px; animation: pulse 2s infinite alternate; }
+        .title-sub { font-family: 'Amiri', serif; font-size: 1.5em; color: var(--gold); margin-bottom: 10px; }
+        .title-main { font-family: 'Aref Ruqaa', serif; font-size: 3.5em; color: #fff; text-shadow: 0 0 20px rgba(0, 0, 0, 0.8); margin-bottom: 20px; }
+
+        .intro-quote {
+            background: rgba(7, 11, 25, 0.4); backdrop-filter: blur(8px); padding: 25px; border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.1); margin-top: 15px; font-size: 1.15em; line-height: 1.8;
+            max-width: 600px; font-family: 'Amiri', serif; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .scroll-down {
+            position: absolute; bottom: 30px; font-size: 0.9em; color: rgba(255,255,255,0.8);
+            animation: bounce 2s infinite; text-shadow: 0 2px 4px rgba(0,0,0,0.5); z-index: 10;
+        }
+
+        .names-wrapper { position: relative; z-index: 1; }
+        .name { font-family: 'Aref Ruqaa', serif; font-size: 4.5em; color: #fff; text-shadow: 0 4px 15px rgba(0, 0, 0, 0.6); line-height: 1.2; }
+        .and-symbol { font-family: 'Amiri', serif; font-size: 2em; color: var(--gold); margin: 10px 0; display: block; }
+
+        .timeline-box {
+            background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(223, 177, 99, 0.3); padding: 20px;
+            border-radius: 15px; backdrop-filter: blur(5px); width: 100%; max-width: 400px; margin-bottom: 15px;
+            text-align: start; box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+        }
+        .timeline-box h3 { color: var(--gold); font-size: 1.3em; margin-bottom: 5px; font-family: 'Amiri', serif; }
+        .timeline-box p { font-size: 1.1em; letter-spacing: 1px; font-weight: 600; }
+        .timeline-box .small-text { font-size: 0.85em; color: rgba(255,255,255,0.7); }
+
+        .ages-wrapper { display: flex; flex-direction: column; gap: 40px; width: 100%; max-width: 600px; }
+        .age-section h3 { font-family: 'Aref Ruqaa', serif; font-size: 2.5em; color: var(--gold); margin-bottom: 15px; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
+
+        .counter-container { display: flex; justify-content: center; flex-wrap: wrap; gap: 15px; max-width: 600px; }
+        .time-box {
+            background: rgba(20, 30, 58, 0.5); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 12px;
+            padding: 15px 10px; min-width: 75px; text-align: center; backdrop-filter: blur(10px); box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+        }
+        .time-box span.num { display: block; font-family: 'Amiri', serif; font-size: 2.2em; color: var(--gold); margin-bottom: 5px; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+        .time-box span.label { display: block; font-size: 0.9em; color: #fff; }
+
+        .mini-counter { gap: 10px; }
+        .mini-counter .time-box { min-width: 60px; padding: 10px 5px; }
+        .mini-counter span.num { font-size: 1.5em; }
+        .mini-counter span.label { font-size: 0.8em; }
+
+        /* =========================================
+           تنسيق الخريطة الجغرافية الدقيقة (API)
+           ========================================= */
+        .map-container {
+            width: 100%;
+            max-width: 450px;
+            margin-bottom: 10px;
+            background: rgba(7, 11, 25, 0.4);
+            border-radius: 20px;
+            border: 1px solid rgba(223, 177, 99, 0.2);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+            padding: 20px;
+            backdrop-filter: blur(5px);
+        }
+        #algeriaMap {
+            width: 100%;
+            height: auto;
+            overflow: visible;
+        }
+        .algeria-path {
+            fill: url(#dot-pattern);
+            stroke: rgba(223, 177, 99, 0.8);
+            stroke-width: 1.5;
+            filter: url(#shadow);
+            transition: fill 0.3s ease;
+        }
+        .route-path {
+            stroke-dasharray: 8 8;
+            animation: dash 15s linear infinite;
+        }
+        @keyframes dash { to { stroke-dashoffset: -100; } }
+
+        .quote-small { font-family: 'Amiri', serif; font-size: 1.3em; color: rgba(255,255,255,0.9); margin-bottom: 5px; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+        .quote-large { font-family: 'Aref Ruqaa', serif; font-size: 3.5em; color: #fff; margin-bottom: 20px; text-shadow: 0 4px 10px rgba(0,0,0,0.6); }
+        .quote-desc {
+            font-family: 'Amiri', serif; font-size: 1.1em; line-height: 1.8; color: rgba(255,255,255,0.8);
+            max-width: 90%; margin-bottom: 40px; text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        @keyframes pulse { 0% { transform: scale(1); opacity: 0.8; } 100% { transform: scale(1.1); opacity: 1; } }
+        @keyframes bounce { 0%, 20%, 50%, 80%, 100% { transform: translateY(0); } 40% { transform: translateY(10px); } 60% { transform: translateY(5px); } }
+    </style>
+</head>
+<body>
+
+    <!-- زر اللغة -->
+    <div class="lang-switch" onclick="toggleLanguage()">
+        <span class="ar">🌐 English</span>
+        <span class="en">🌐 العربية</span>
+    </div>
+
+    <!-- الشاشة 1: البداية -->
+    <section class="screen" id="screen-intro">
+        <div class="ornament">❂</div>
+        <div class="title-sub"><span class="ar">قصة حبنا</span><span class="en">Our Love Story</span></div>
+        <h1 class="title-main"><span class="ar">حكاية استثنائية</span><span class="en">An Exceptional Tale</span></h1>
+        
+        <div class="intro-quote">
+            <span class="ar">روحان التقيا في زحام الحياة، فصنعا عالماً خاصاً بهما لا يشبه أحداً. لم تكن البداية مجرد صدفة، بل أقداراً كُتبت في السماء لتجمع بين قلبين خُلقا ليكونا معاً. مع كل ثانية تمضي، يزداد هذا الرباط وثوقاً، وتُزهر الحكاية حباً وسلاماً. هي قصة بدأت بنبضة، وتستمر لتكون عمراً بأكمله.</span>
+            <span class="en">Two souls met in the rush of life, creating a world uniquely theirs. The beginning wasn't a mere coincidence, but destiny written in the stars. With every passing second, this bond grows stronger. A story that began with a heartbeat, continuing for a lifetime.</span>
+        </div>
+        <div class="scroll-down"><span class="ar">مرر للأسفل ⬇</span><span class="en">Scroll Down ⬇</span></div>
+    </section>
+
+    <!-- الشاشة 2: الأسماء -->
+    <section class="screen" id="screen-names">
+        <div class="names-wrapper">
+            <div class="name"><span class="ar">إسحاق</span><span class="en">Ishak</span></div>
+            <span class="and-symbol"><span class="ar">و</span><span class="en">&</span></span>
+            <div class="name"><span class="ar">لميس</span><span class="en">Lamis</span></div>
+        </div>
+        <div class="scroll-down"><span class="ar">مرر للأسفل ⬇</span><span class="en">Scroll Down ⬇</span></div>
+    </section>
+
+    <!-- الشاشة 3: التواريخ -->
+    <section class="screen" id="screen-timeline">
+        <div class="timeline-box">
+            <h3><span class="ar">ميلاد إسحاق</span><span class="en">Ishak's Birth</span></h3>
+            <p>18.06.2003</p>
+        </div>
+        <div class="timeline-box">
+            <h3><span class="ar">ميلاد لميس</span><span class="en">Lamis's Birth</span></h3>
+            <p>06.02.2008</p>
+        </div>
+        <div class="timeline-box">
+            <h3><span class="ar">بداية النبض</span><span class="en">The First Heartbeat</span></h3>
+            <p>15.02.2022</p>
+            <div class="small-text"><span class="ar">يوم الثلاثاء</span><span class="en">Tuesday</span></div>
+        </div>
+        <div class="timeline-box">
+            <h3><span class="ar">أول لقاء</span><span class="en">First Meeting</span></h3>
+            <p>23.09.2026</p>
+            <div class="small-text"><span class="ar">الأربعاء - الساعة 09:14</span><span class="en">Wednesday - 09:14 AM</span></div>
+        </div>
+        <div class="scroll-down"><span class="ar">مرر للأسفل ⬇</span><span class="en">Scroll Down ⬇</span></div>
+    </section>
+
+    <!-- الشاشة 4: الأعمار -->
+    <section class="screen" id="screen-ages">
+        <div class="ages-wrapper">
+            <div class="age-section">
+                <h3><span class="ar">عمر إسحاق</span><span class="en">Ishak's Age</span></h3>
+                <div class="counter-container mini-counter">
+                    <div class="time-box"><span class="num" id="i-years">00</span><span class="label"><span class="ar">سنوات</span><span class="en">Years</span></span></div>
+                    <div class="time-box"><span class="num" id="i-months">00</span><span class="label"><span class="ar">أشهر</span><span class="en">Months</span></span></div>
+                    <div class="time-box"><span class="num" id="i-days">00</span><span class="label"><span class="ar">أيام</span><span class="en">Days</span></span></div>
+                    <div class="time-box"><span class="num" id="i-hours">00</span><span class="label"><span class="ar">ساعات</span><span class="en">Hours</span></span></div>
+                    <div class="time-box"><span class="num" id="i-minutes">00</span><span class="label"><span class="ar">دقائق</span><span class="en">Minutes</span></span></div>
+                    <div class="time-box"><span class="num" id="i-seconds">00</span><span class="label"><span class="ar">ثواني</span><span class="en">Seconds</span></span></div>
+                </div>
+            </div>
+            <div class="age-section">
+                <h3><span class="ar">عمر لميس</span><span class="en">Lamis's Age</span></h3>
+                <div class="counter-container mini-counter">
+                    <div class="time-box"><span class="num" id="l-years">00</span><span class="label"><span class="ar">سنوات</span><span class="en">Years</span></span></div>
+                    <div class="time-box"><span class="num" id="l-months">00</span><span class="label"><span class="ar">أشهر</span><span class="en">Months</span></span></div>
+                    <div class="time-box"><span class="num" id="l-days">00</span><span class="label"><span class="ar">أيام</span><span class="en">Days</span></span></div>
+                    <div class="time-box"><span class="num" id="l-hours">00</span><span class="label"><span class="ar">ساعات</span><span class="en">Hours</span></span></div>
+                    <div class="time-box"><span class="num" id="l-minutes">00</span><span class="label"><span class="ar">دقائق</span><span class="en">Minutes</span></span></div>
+                    <div class="time-box"><span class="num" id="l-seconds">00</span><span class="label"><span class="ar">ثواني</span><span class="en">Seconds</span></span></div>
+                </div>
+            </div>
+        </div>
+        <div class="scroll-down"><span class="ar">مرر للأسفل ⬇</span><span class="en">Scroll Down ⬇</span></div>
+    </section>
+
+    <!-- الشاشة 5: خريطة الذكريات الجغرافية (المدمجة برمجياً) والتعبير الرومانسي المدمج -->
+    <section class="screen" id="screen-map-section">
+        <div class="ornament" style="font-size: 2em; margin-bottom: 5px;">🌍</div>
+        <div class="title-sub" style="margin-bottom: 20px;">
+            <span class="ar">خريطة ذكرياتنا</span><span class="en">Map of Our Memories</span>
+        </div>
+        
+        <div class="map-container">
+            <svg id="algeriaMap" viewBox="0 0 700 800" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <pattern id="dot-pattern" width="8" height="8" patternUnits="userSpaceOnUse">
+                        <circle cx="2" cy="2" r="1.5" fill="rgba(223, 177, 99, 0.4)" />
+                    </pattern>
+                    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+                        <feDropShadow dx="2" dy="6" stdDeviation="6" flood-color="#000" flood-opacity="0.5"/>
+                    </filter>
+                </defs>
+                <g id="country"></g>
+                <g id="markers"></g>
+            </svg>
+        </div>
+
+        <!-- التعبير الرومانسي الجميل مدمج معه تفاصيل الأماكن بدلاً من النقاط السابقة -->
+        <div class="intro-quote" style="padding: 20px; font-size: 1.1em; max-width: 550px; margin-top: 5px;">
+            <span class="ar">رغم المسافات التي تفصل بين بوسعادة وأولاد فايت، وصولاً إلى تمنراست، إلا أن الأرواح تلاقت في شوفالي (عند مسجد الأرقم) حيث كان أول لقاء، وبالقرب من جامعة الجزائر 2 (أبو القاسم سعد الله) حيث تدرس أميرتي. الجغرافيا مجرد خطوط، أما قلوبنا فتعيش في وطن واحد.</span>
+            <span class="en">Despite the distances separating Bou Saâda and Ouled Fayet, all the way to Tamanrasset, our souls met in Chevalley (Al-Arqam Mosque) where it all began, near Univ of Algiers 2 where my princess studies. Geography is just lines, but our hearts live in one homeland.</span>
+        </div>
+
+        <div class="scroll-down"><span class="ar">مرر للأسفل ⬇</span><span class="en">Scroll Down ⬇</span></div>
+    </section>
+
+    <!-- الشاشة 6: العداد الرئيسي -->
+    <section class="screen" id="screen-counter">
+        <div class="quote-small"><span class="ar">تحت سماء لا تنام</span><span class="en">Under a sleepless sky</span></div>
+        <div class="quote-large"><span class="ar">حتى تتلألأ النجوم</span><span class="en">Until the stars shine</span></div>
+        
+        <div class="quote-desc">
+            <span class="ar">كل ثانية تقربنا من أحلامنا، نعد اللحظات معاً منذ أن التقت أرواحنا..</span>
+            <span class="en">Every second brings us closer to our dreams, counting the moments together..</span>
+        </div>
+
+        <div class="counter-container">
+            <div class="time-box"><span class="num" id="years">00</span><span class="label"><span class="ar">سنوات</span><span class="en">Years</span></span></div>
+            <div class="time-box"><span class="num" id="months">00</span><span class="label"><span class="ar">أشهر</span><span class="en">Months</span></span></div>
+            <div class="time-box"><span class="num" id="days">00</span><span class="label"><span class="ar">أيام</span><span class="en">Days</span></span></div>
+            <div class="time-box"><span class="num" id="hours">00</span><span class="label"><span class="ar">ساعات</span><span class="en">Hours</span></span></div>
+            <div class="time-box"><span class="num" id="minutes">00</span><span class="label"><span class="ar">دقائق</span><span class="en">Minutes</span></span></div>
+            <div class="time-box"><span class="num" id="seconds">00</span><span class="label"><span class="ar">ثواني</span><span class="en">Seconds</span></span></div>
+        </div>
+    </section>
+
+    <!-- الجافاسكريبت الشامل -->
+    <script>
+        // --- 1. برمجة تغيير اللغة ---
+        function toggleLanguage() {
+            const docEl = document.documentElement;
+            const body = document.body;
+            
+            if (docEl.getAttribute('dir') === 'rtl') {
+                docEl.setAttribute('dir', 'ltr');
+                docEl.setAttribute('lang', 'en');
+                body.classList.add('english-mode');
+                document.title = "Love Story | Ishak & Lamis";
+            } else {
+                docEl.setAttribute('dir', 'rtl');
+                docEl.setAttribute('lang', 'ar');
+                body.classList.remove('english-mode');
+                document.title = "حكاية حب | إسحاق ولميس";
+            }
+        }
+
+        // --- 2. برمجة العدادات ---
+        const relationshipDate = new Date('2022-02-15T00:00:00');
+        const ishakDate = new Date('2003-06-18T00:00:00');
+        const lamisDate = new Date('2008-02-06T00:00:00');
+
+        function calcAndDisplay(startDate, prefix) {
+            const now = new Date();
+            let years = now.getFullYear() - startDate.getFullYear();
+            let months = now.getMonth() - startDate.getMonth();
+            let days = now.getDate() - startDate.getDate();
+            let hours = now.getHours() - startDate.getHours();
+            let minutes = now.getMinutes() - startDate.getMinutes();
+            let seconds = now.getSeconds() - startDate.getSeconds();
+
+            if (seconds < 0) { seconds += 60; minutes--; }
+            if (minutes < 0) { minutes += 60; hours--; }
+            if (hours < 0) { hours += 24; days--; }
+            if (days < 0) {
+                const prevMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+                days += prevMonth.getDate(); months--;
+            }
+            if (months < 0) { months += 12; years--; }
+
+            let p = prefix ? prefix + '-' : '';
+            
+            document.getElementById(p + 'years').innerText = String(years).padStart(2, '0');
+            document.getElementById(p + 'months').innerText = String(months).padStart(2, '0');
+            document.getElementById(p + 'days').innerText = String(days).padStart(2, '0');
+            document.getElementById(p + 'hours').innerText = String(hours).padStart(2, '0');
+            document.getElementById(p + 'minutes').innerText = String(minutes).padStart(2, '0');
+            document.getElementById(p + 'seconds').innerText = String(seconds).padStart(2, '0');
+        }
+
+        function updateAllCounters() {
+            calcAndDisplay(relationshipDate, ''); 
+            calcAndDisplay(ishakDate, 'i');       
+            calcAndDisplay(lamisDate, 'l');       
+        }
+
+        setInterval(updateAllCounters, 1000);
+        updateAllCounters(); 
+
+        // --- 3. رسم الخريطة وإسقاط الدبابيس برمجياً (API) ---
+        async function drawAlgeria() {
+            try {
+                const metadata = await fetch("https://www.geoboundaries.org/api/current/gbOpen/DZA/ADM0/").then(r => r.json());
+                const geo = await fetch(metadata.simplifiedGeometryGeoJSON).then(r => r.json());
+                
+                const svgGroup = document.getElementById("country");
+                const markersGroup = document.getElementById("markers");
+                const features = geo.features;
+                let points = [];
+
+                function collect(coords) {
+                    if (typeof coords[0] === "number") points.push(coords);
+                    else coords.forEach(collect);
+                }
+                features.forEach(f => collect(f.geometry.coordinates));
+
+                const lons = points.map(p => p[0]);
+                const lats = points.map(p => p[1]);
+                const minLon = Math.min(...lons), maxLon = Math.max(...lons);
+                const minLat = Math.min(...lats), maxLat = Math.max(...lats);
+
+                const centerLat = (minLat + maxLat) / 2;
+                const correction = Math.cos(centerLat * Math.PI / 180);
+
+                const width = (maxLon - minLon) * correction;
+                const height = maxLat - minLat;
+                const scale = Math.min(620 / width, 730 / height);
+
+                const offsetX = (700 - width * scale) / 2;
+                const offsetY = (800 - height * scale) / 2;
+
+                function project(point) {
+                    const x = offsetX + (point[0] - minLon) * correction * scale;
+                    const y = offsetY + (maxLat - point[1]) * scale;
+                    return [x, y];
+                }
+
+                function makePath(ring) {
+                    return ring.map((p, i) => {
+                        const [x, y] = project(p);
+                        return (i === 0 ? "M" : "L") + x.toFixed(2) + "," + y.toFixed(2);
+                    }).join(" ") + " Z";
+                }
+
+                // رسم الحدود
+                features.forEach(feature => {
+                    let paths = [];
+                    const geom = feature.geometry;
+                    if (geom.type === "Polygon") geom.coordinates.forEach(r => paths.push(makePath(r)));
+                    if (geom.type === "MultiPolygon") geom.coordinates.forEach(p => p.forEach(r => paths.push(makePath(r))));
+
+                    const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                    path.setAttribute("d", paths.join(" "));
+                    path.setAttribute("class", "algeria-path");
+                    svgGroup.appendChild(path);
+                });
+
+                // دالة مساعدة لإضافة عناصر SVG
+                const addEl = (tag, attrs, parent, text) => {
+                    const el = document.createElementNS("http://www.w3.org/2000/svg", tag);
+                    for (const k in attrs) el.setAttribute(k, attrs[k]);
+                    if (text) el.innerHTML = text;
+                    parent.appendChild(el);
+                    return el;
+                };
+
+                // الإحداثيات الدقيقة
+                const ptTam = project([5.52, 22.78]);   // تمنراست
+                const ptBS = project([4.17, 35.21]);    // بوسعادة
+                const ptOF = project([2.94, 36.73]);    // أولاد فايت
+
+                // المسار المنحني
+                addEl("path", { 
+                    d: `M ${ptTam[0]},${ptTam[1]} Q ${ptTam[0]-150},${(ptTam[1]+ptOF[1])/2} ${ptOF[0]},${ptOF[1]}`, 
+                    fill: "none", stroke: "var(--gold)", "stroke-width": 3, class: "route-path", filter: "url(#shadow)" 
+                }, markersGroup);
+
+                // بطاقة المسافة
+                const midX = ptTam[0] - 80, midY = (ptTam[1] + ptOF[1]) / 2;
+                addEl("rect", {x: midX - 85, y: midY - 15, width: 170, height: 30, rx: 15, fill: "#070b19", stroke: "var(--gold)", filter: "url(#shadow)"}, markersGroup);
+                const distText = addEl("text", {x: midX, y: midY + 5, fill: "var(--gold)", "font-size": 13, "font-family": "Cairo", "font-weight": "bold", "text-anchor": "middle"}, markersGroup);
+                addEl("tspan", {class: "ar-text"}, distText, "مسافة الشوق: 1900 كم");
+                addEl("tspan", {class: "en-text"}, distText, "Distance: 1900 KM");
+
+                // 1. تمنراست (نجمة صفراء)
+                addEl("circle", {cx: ptTam[0], cy: ptTam[1], r: 18, fill: "#facc15", filter: "url(#shadow)"}, markersGroup);
+                addEl("circle", {cx: ptTam[0], cy: ptTam[1], r: 14, fill: "none", stroke: "#fff", "stroke-width": 2}, markersGroup);
+                addEl("text", {x: ptTam[0], y: ptTam[1]+6, fill: "#fff", "font-size": 20, "text-anchor": "middle"}, markersGroup, "★");
+                const txtTam = addEl("text", {x: ptTam[0]+25, y: ptTam[1]+5, fill: "#fff", "font-size": 18, "font-family": "Cairo", "font-weight": "bold", "text-anchor": "start"}, markersGroup);
+                addEl("tspan", {class: "ar-text"}, txtTam, "تمنراست");
+                addEl("tspan", {class: "en-text"}, txtTam, "Tamanrasset");
+
+                // 2. بوسعادة (قلب وردي)
+                addEl("circle", {cx: ptBS[0], cy: ptBS[1], r: 16, fill: "#ec4899", filter: "url(#shadow)"}, markersGroup);
+                addEl("circle", {cx: ptBS[0], cy: ptBS[1], r: 12, fill: "none", stroke: "#fff", "stroke-width": 2}, markersGroup);
+                addEl("text", {x: ptBS[0], y: ptBS[1]+5, fill: "#fff", "font-size": 16, "text-anchor": "middle"}, markersGroup, "❤");
+                const txtBS = addEl("text", {x: ptBS[0]+22, y: ptBS[1]+5, fill: "#fff", "font-size": 18, "font-family": "Cairo", "font-weight": "bold", "text-anchor": "start"}, markersGroup);
+                addEl("tspan", {class: "ar-text"}, txtBS, "بوسعادة");
+                addEl("tspan", {class: "en-text"}, txtBS, "Bou Saâda");
+
+                // 3. أولاد فايت (نقطة حمراء)
+                addEl("circle", {cx: ptOF[0], cy: ptOF[1], r: 10, fill: "#ef4444", stroke: "#fff", "stroke-width": 2, filter: "url(#shadow)"}, markersGroup);
+                const txtOF = addEl("text", {x: ptOF[0]-15, y: ptOF[1]+5, fill: "#fff", "font-size": 18, "font-family": "Cairo", "font-weight": "bold", "text-anchor": "end"}, markersGroup);
+                addEl("tspan", {class: "ar-text"}, txtOF, "أولاد فايت");
+                addEl("tspan", {class: "en-text"}, txtOF, "Ouled Fayet");
+
+            } catch(e) {
+                console.error("خطأ في جلب بيانات الخريطة:", e);
+            }
+        }
+
+        // تشغيل دالة رسم الخريطة
+        drawAlgeria();
+    </script>
+</body>
+</html>
