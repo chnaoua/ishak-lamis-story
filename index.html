@@ -161,36 +161,61 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
-        /* تنسيق إطار الصور الاحترافي */
-        .memory-card {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(223, 177, 99, 0.4);
-            border-radius: 20px;
-            padding: 15px;
-            max-width: 360px;
+        /* =========================================
+           الكادر الاحترافي الفاخر للصور (الملكي)
+           ========================================= */
+        .pro-frame {
+            background: linear-gradient(145deg, rgba(20, 30, 58, 0.8), rgba(7, 11, 25, 0.95));
+            border: 2px solid var(--gold);
+            border-radius: 25px;
+            padding: 20px;
+            max-width: 400px;
             width: 90%;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+            backdrop-filter: blur(15px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 20px rgba(223, 177, 99, 0.2);
             margin-bottom: 15px;
+            position: relative;
         }
 
-        .memory-img {
+        /* إطار داخلي رفيع يضفي لمسة تصميم بطاقات الزفاف الحديثة */
+        .pro-frame::before {
+            content: '';
+            position: absolute;
+            top: 8px; left: 8px; right: 8px; bottom: 8px;
+            border: 1px dashed rgba(223, 177, 99, 0.3);
+            border-radius: 18px;
+            pointer-events: none;
+        }
+
+        .pro-img-wrapper {
+            position: relative;
+            border-radius: 14px;
+            overflow: hidden;
+            border: 1px solid rgba(223, 177, 99, 0.3);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+        }
+
+        .pro-img {
             width: 100%;
             height: auto;
-            max-height: 350px;
+            max-height: 360px;
             object-fit: cover;
-            border-radius: 12px;
-            border: 1px solid rgba(223, 177, 99, 0.2);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+            display: block;
+            transition: transform 0.5s ease;
+        }
+        
+        .pro-frame:hover .pro-img {
+            transform: scale(1.03);
         }
 
-        .memory-caption {
+        .pro-caption {
             font-family: 'Amiri', serif;
-            font-size: 1.05em;
-            color: rgba(255, 255, 255, 0.9);
-            margin-top: 12px;
-            line-height: 1.5;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            font-size: 1.1em;
+            color: #f3f4f6;
+            margin-top: 15px;
+            line-height: 1.7;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.8);
+            padding: 0 5px;
         }
 
         .scroll-down {
@@ -484,19 +509,21 @@
         </div>
     </section>
 
-    <!-- الشاشة الجديدة 1: لقطة الشاشة قبل اللقاء بدقائق -->
+    <!-- الشاشة الجديدة 1: لقطة الشاشة قبل اللقاء بدقائق (بالكادر الاحترافي) -->
     <section class="screen" id="screen-chat">
-        <div class="ornament" style="font-size: 2em; margin-bottom: 5px;">💬</div>
+        <div class="ornament" style="font-size: 2em; margin-bottom: 5px;">⏳</div>
         <div class="title-sub" style="margin-bottom: 15px;">
             <span class="ar">قبل اللقاء بدقائق</span>
             <span class="en">Minutes Before Meeting</span>
         </div>
 
-        <div class="memory-card">
-            <img src="chat-memory.jpg" alt="قبل اللقاء بدقائق" class="memory-img">
-            <div class="memory-caption">
-                <span class="ar">"راني ف لافاك... صاي اهبطي مالا عند رومبوا وقدمي ليا رانا نلاطو" .. نبضات متسارعة ولهفة اللحظات الأخيرة قبل أن تلتقي الأعين.</span>
-                <span class="en">Racing heartbeats and the eagerness of the final moments before our eyes met.</span>
+        <div class="pro-frame">
+            <div class="pro-img-wrapper">
+                <img src="chat-memory.jpg" alt="قبل اللقاء بدقائق" class="pro-img">
+            </div>
+            <div class="pro-caption">
+                <span class="ar">لحظات ترتفع فيها نبضات الشوق، وتتلاحق الثواني في انتظار الموعد الذي سيجمع الخطوات.</span>
+                <span class="en">Moments when the heartbeats of longing rise, anticipating the meeting.</span>
             </div>
         </div>
 
@@ -506,7 +533,7 @@
         </div>
     </section>
 
-    <!-- الشاشة الجديدة 2: حديقة شوفالي (ذكرى اللقاء والافتراق) -->
+    <!-- الشاشة الجديدة 2: حديقة شوفالي (بالكادر الاحترافي) -->
     <section class="screen" id="screen-memory">
         <div class="ornament" style="font-size: 2em; margin-bottom: 5px;">🌿</div>
         <div class="title-sub" style="margin-bottom: 15px;">
@@ -514,9 +541,11 @@
             <span class="en">Chevalley Garden</span>
         </div>
 
-        <div class="memory-card">
-            <img src="chevalley-garden.jpg" alt="حديقة شوفالي" class="memory-img">
-            <div class="memory-caption">
+        <div class="pro-frame">
+            <div class="pro-img-wrapper">
+                <img src="chevalley-garden.jpg" alt="حديقة شوفالي" class="pro-img">
+            </div>
+            <div class="pro-caption">
                 <span class="ar">هنا حيث افترقنا بعد لقاء لا يُنسى؛ المكان الذي انتهى فيه يومنا الأول معاً، وبدأت معه أجمل حكايات الشوق.</span>
                 <span class="en">Here where we parted after an unforgettable meeting; the place where our first day together ended, and longing began.</span>
             </div>
@@ -595,7 +624,8 @@
             if (hours < 0) { hours += 24; days--; }
             if (days < 0) {
                 const prevMonth = new Date(now.getFullYear(), now.getMonth(), 0);
-                days += prevMonth.getDate(); months--;
+                days += prevMonth.getDate();
+                months--;
             }
             if (months < 0) { months += 12; years--; }
 
